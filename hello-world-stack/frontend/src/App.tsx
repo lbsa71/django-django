@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Message } from './types/api';
+import { HelloResponse } from './types/api';
 import { fetchHelloMessage } from './services/api';
 import './App.css';
 
 function App() {
-  const [message, setMessage] = useState<Message | null>(null);
+  const [data, setData] = useState<HelloResponse | null>(null);
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
     const loadMessage = async () => {
       try {
-        const data = await fetchHelloMessage();
-        setMessage(data);
+        const response = await fetchHelloMessage();
+        setData(response);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load message');
       }
@@ -25,10 +25,19 @@ function App() {
       <header className="App-header">
         {error ? (
           <p className="error">{error}</p>
-        ) : message ? (
+        ) : data ? (
           <div>
-            <h1>{message.text}</h1>
-            <p>Received at: {new Date(message.created_at).toLocaleString()}</p>
+            <h1>{data.message}</h1>
+            <div className="access-logs">
+              <h2>Access Logs</h2>
+              <ul>
+                {data.access_logs.map((log) => (
+                  <li key={log.id}>
+                    Accessed at: {new Date(log.timestamp).toLocaleString()}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         ) : (
           <p>Loading...</p>

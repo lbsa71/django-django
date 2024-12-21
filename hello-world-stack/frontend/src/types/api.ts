@@ -1,5 +1,9 @@
-export type Message = {
+export type RequestLog = {
     id: number;
-    text: string;
-    created_at: string;
+    timestamp: string;
+};
+
+export type HelloResponse = {
+    message: string;
+    access_logs: RequestLog[];
 };
