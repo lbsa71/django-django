@@ -16,6 +16,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project files
 COPY . .
 
+# Add the project root to Python path
+ENV PYTHONPATH=/app
+
+# Create static files directory
+RUN mkdir -p /app/staticfiles
+
+# Configure static files directory
+ENV DJANGO_STATIC_ROOT=/app/staticfiles
+
 # Run migrations and collect static files
 RUN python manage.py collectstatic --noinput
 

@@ -15,6 +15,7 @@ spec:
       containers:
         - name: backend
           image: hello-world-backend:latest
+          imagePullPolicy: Never
           ports:
             - containerPort: 8000
           env:
