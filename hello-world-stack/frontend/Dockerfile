@@ -5,13 +5,13 @@ WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Copy source files
 COPY . .
 
 # Build the app
-RUN npm run build
+RUN npm run build --legacy-peer-deps
 
 # Production stage
 FROM nginx:alpine
