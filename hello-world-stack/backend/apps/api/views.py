@@ -1,12 +1,18 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Message
-from .serializers import MessageSerializer
+from .models import RequestLog
+from .serializers import RequestLogSerializer
 
 class HelloWorldView(APIView):
     def get(self, request):
-        message = Message.objects.first()
-        if not message:
-            message = Message.objects.create(text="Hello World")
-        serializer = MessageSerializer(message)
-        return Response(serializer.data)
+        # Log this request
+        RequestLog.objects.create()
+        
+        # Get all logs ordered by timestamp
+        logs = RequestLog.objects.all().order_by('-timestamp')
+        serializer = RequestLogSerializer(logs, many=True)
+        
+        return Response({
+            'message': 'Hello World',
+            'access_logs': serializer.data
+        })

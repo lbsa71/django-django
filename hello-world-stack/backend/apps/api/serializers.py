@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Message
+from .models import RequestLog
 
-class MessageSerializer(serializers.ModelSerializer):
+class RequestLogSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Message
-        fields = ['id', 'text', 'created_at']
+        model = RequestLog
+        fields = ['id', 'timestamp']

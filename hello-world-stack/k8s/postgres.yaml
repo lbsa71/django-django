@@ -9,14 +9,6 @@ spec:
     requests:
       storage: 1Gi
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: postgres-secret
-type: Opaque
-data:
-  POSTGRES_PASSWORD: cG9zdGdyZXM= # base64 encoded 'postgres'
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,7 +26,6 @@ spec:
       containers:
         - name: postgres
           image: postgres:15
-          imagePullPolicy: Never
           ports:
             - containerPort: 5432
           env:
@@ -43,10 +34,7 @@ spec:
             - name: POSTGRES_USER
               value: postgres
             - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secret
-                  key: POSTGRES_PASSWORD
+              value: postgres    # Direct value instead of secret reference
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
